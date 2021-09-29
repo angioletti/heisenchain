@@ -3,6 +3,23 @@
 # Found at https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 # Make sure to install Flask: https://flask.palletsprojects.com/en/2.0.x/installation/
 
+################################################################################
+# 
+# TO DO
+#
+################################################################################
+# 
+# List features that are still to be included or fixes that have to be made
+# 
+#
+# Features:
+# - add users
+# - add profiles and their permissions
+# - add docstrings to all classes and pertinent methods
+#
+################################################################################
+
+
 from hashlib import sha256
 from flask import Flask, request
 import json
