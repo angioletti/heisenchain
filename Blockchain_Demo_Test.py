@@ -26,8 +26,13 @@ class Blockchain:
         self.create_genesis_block()
 
     def create_genesis_block(self):
+        '''
+        The Genesis Block is a very special (and catholic) block.
+        Its nonce is always zero and its hash is always a string of 63 zeros
+        '''
         genesis_block = Block(0, [], time.time(), "0")
-        genesis_block.hash = genesis_block.compute_hash()
+        genesis_block.nonce = 0
+        genesis_block.hash = '0' * 64
         self.chain.append(genesis_block)
 
     @property
