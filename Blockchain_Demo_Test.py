@@ -3,18 +3,34 @@
 # Found at https://www.activestate.com/blog/how-to-build-a-blockchain-in-python/
 # Make sure to install Flask: https://flask.palletsprojects.com/en/2.0.x/installation/
 
+################################################################################
+# 
+# TO DO
+#
+################################################################################
+# 
+# List features that are still to be included or fixes that have to be made
+# 
+#
+# Features:
+# - add users
+# - add profiles and their permissions
+# - add docstrings to all classes and pertinent methods
+#
+################################################################################
+
+
 from hashlib import sha256
 from flask import Flask, request
 import json
 import time
 
 class Block:
-    def __init__(self, index, transactions, timestamp, previous_hash, nonce=0):
+    def __init__(self, index, transactions, timestamp, previous_hash):
         self.index = index
         self.transactions = transactions
         self.timestamp = timestamp
         self.previous_hash = previous_hash
-        self.nonce = nonce
 
     def compute_hash(self):
         block_string = json.dumps(self.__dict__, sort_keys=True)
@@ -27,9 +43,15 @@ class Blockchain:
         self.create_genesis_block()
 
     def create_genesis_block(self):
+        '''
+        The Genesis Block is a very special (and catholic) block.
+        Its nonce is always zero and its hash is always a string of 63 zeros
+        '''
         genesis_block = Block(0, [], time.time(), "0")
-        genesis_block.hash = genesis_block.compute_hash()
+        genesis_block.nonce = 0
+        genesis_block.hash = '0' * 64
         self.chain.append(genesis_block)
+
     @property
     def last_block(self):
         return self.chain[-1]
