@@ -9,12 +9,11 @@ import json
 import time
 
 class Block:
-    def __init__(self, index, transactions, timestamp, previous_hash, nonce=0):
+    def __init__(self, index, transactions, timestamp, previous_hash):
         self.index = index
         self.transactions = transactions
         self.timestamp = timestamp
         self.previous_hash = previous_hash
-        self.nonce = nonce
 
     def compute_hash(self):
         block_string = json.dumps(self.__dict__, sort_keys=True)
@@ -30,6 +29,7 @@ class Blockchain:
         genesis_block = Block(0, [], time.time(), "0")
         genesis_block.hash = genesis_block.compute_hash()
         self.chain.append(genesis_block)
+
     @property
     def last_block(self):
         return self.chain[-1]
