@@ -94,10 +94,10 @@ class Blockchain:
         
         if is_valid_hash(block):
             block.previous_hash = self.last_block()
+            block.index = len(chain) - 1
             chain.append(block)
+
         else:
             print("Block not added. Check its integrity before trying again")
 
         return None
-
-
