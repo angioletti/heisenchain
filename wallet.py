@@ -1,3 +1,5 @@
+import hashlib
+
 class Wallet:
     '''
     Object that retains balances for users.
@@ -6,13 +8,17 @@ class Wallet:
     operate in transactions.
 
     arguments:  none
-    returns  :  wallet object with products and their respective balances.
+    returns  :  wallet object with a wallet_id, its products and their respective balances.
 
     To manipulate the products in a wallet, specific methods have to be used
     '''
     def __init__(self):
         self.products = dict()
+        self.wallet_id = self.wallet_id()
 
+    def wallet_id(self):
+        wallet_id = hl.sha1(repr(str(time.time())).encode()).hexdigest()
+        return wallet_id
 
     def add_resource(self, product, amount):
         if product.id in [x for x in self.products.keys()]:
