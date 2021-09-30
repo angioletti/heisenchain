@@ -19,6 +19,7 @@ class Blockchain:
 
     def __init__(self):
         self.unconfirmed_blocks = []
+        self.transaction_pool = []
         self.chain = []
         self.create_genesis_block()
     
