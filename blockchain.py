@@ -1,9 +1,9 @@
 ##
 ## Blockchain class to be imported by our simulator
-## v 0.01
-## last update: 2021-09-29
 ##
+
 from hashlib import sha256
+import transaction as trn
 import block as bl
 import time
 import json
@@ -16,11 +16,12 @@ class Blockchain:
     the blockchain will be reset
     '''
     difficulty = 2
-    allowed_transactions = ['create', 'transfer', 'remove']
 
     def __init__(self):
-        self.unconfirmed_blocks = []
-        self.transaction_pool = []
+        self.pool_unconfirmed_blocks = []
+        self.pool_rejected_blocks = []
+        self.pool_transaction = []
+        self.pool_rejected_transac = []
         self.chain = []
         self.create_genesis_block()
 
@@ -67,19 +68,13 @@ class Blockchain:
         nonce = block.nonce
         bhash = block.hash
 
-        # The hash has the expected form
-        if bhash.startswith('0')*self.difficulty:
-            looks_right = True
-        else:
-            looks_right = False
-
         # Was not tampered with
         if bhash == self.compute_hash(block):
             not_tampered = True
         else:
             not_tampered = False
 
-        return (looks_right and not_tampered)
+        return not_tampered
 
     def add_block(self, block):
         '''
@@ -100,10 +95,22 @@ class Blockchain:
 
         else:
             print("Block not added. Check its integrity before trying again")
+            self.pool_rejected_blocks.append(block)
 
         return None
 
-#    def operate(self, transac, sender, recepient):
-#        transac.coverage = transac.validate_coverage(sender, transac.product, transac.quantity)
-#        if transac.coverage == True:
+    def transaction_broker(self,trtype,product,quantity,sender,recepient,details):
+        '''
+        This method instantiates transactions and files them to be included in blocks
+        '''
+        transac = trn.Transaction(trtype, product, quantity, sender, recepient, details)
+        self.pool_transaction.append(transac)
 #
+# 
+#         def validate_coverage(sender, product, quantity):
+#             self.sender = sender
+#             if trtype != 'create' and self.sender.products[product] >= quantity:
+#                 return True
+#             else:
+#                 print("Insufficient funds to cover the transaction.")
+#                 return False
