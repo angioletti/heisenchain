@@ -1,4 +1,5 @@
-import hashlib
+import hashlib as hl
+import time
 
 class Wallet:
     '''
@@ -12,9 +13,10 @@ class Wallet:
 
     To manipulate the products in a wallet, specific methods have to be used
     '''
-    def __init__(self):
+    def __init__(self, blockchain):
         self.products = dict()
         self.wallet_id = self.wallet_id()
+        self.blockchain = blockchain
 
     def wallet_id(self):
         wallet_id = hl.sha1(repr(str(time.time())).encode()).hexdigest()
@@ -36,5 +38,8 @@ class Wallet:
 
     def __repr__(self):
         header = ['Total balance for this wallet:']
-        products = ["{prd} : {qty}".format(prd=x[:6], qty=y) for x,y in self.products.items()]
-        return '\n'.join(header + products)
+        if len(self.products) == 0:
+            return self.wallet_id[:4] + ": No funds!\n"
+        else:
+            products = ["{prd} : {qty}".format(prd=x[:6], qty=y) for x,y in self.products.items()]
+            return '\n'.join(header + products + ['\n'])
