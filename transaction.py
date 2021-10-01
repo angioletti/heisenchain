@@ -26,7 +26,6 @@ class Transaction:
     def __repr__(self):
         return('TR-' + self.transac_id[:4])
 
-
     def transac_id(self):
         id_seed = [self.product.id, self.quantity, self.details,
                    self.recepient, self.sender, self.create_timestamp]
