@@ -16,13 +16,14 @@ class Blockchain:
     the blockchain will be reset
     '''
     difficulty = 2
+    allowed_transactions = ['create', 'transfer', 'remove']
 
     def __init__(self):
         self.unconfirmed_blocks = []
         self.transaction_pool = []
         self.chain = []
         self.create_genesis_block()
-    
+
     @property
     def last_block(self):
         return self.chain[-1]
@@ -33,20 +34,19 @@ class Blockchain:
         It doesn't have to contain a transaction.
         It does, however, contain a nonce and a valid hash
         '''
-        genesis_block = bl.(0, [], time.time(), '0')
+        genesis_block = bl.Block()
         genesis_block.nonce = 0
         genesis_block.hash = '0'*64
         self.chain.append(genesis_block)
 
-    def compute_hash(block):
+    def compute_hash(self, block):
         bstring = json.dumps(block.__dict__, sort_keys=True)
         bhash = sha256(bstring.encode()).hexdigest()
         return bhash
 
-
     def validate_block(self, block):
         '''
-        Validates a block by computing a valid hash and, through that, 
+        Validates a block by computing a valid hash and, through that,
         providing a proof of work type of consensus.
         There is no protocol implemented yet to accommodate multiple miners.
         Returns a tuple with valid hash and its nonce.
@@ -57,7 +57,7 @@ class Blockchain:
             valid_hash = self.compute_hash()
             block.nonce += 1
         return valid_hash, block.nonce - 1
-    
+
     def is_valid_hash(self, block):
         '''
         Checks that a block has been validated.
@@ -92,7 +92,7 @@ class Blockchain:
         and parks that block for validation by a miner
         The block was validated by a miner, who asks to append the block to the blockchain.
         '''
-        
+
         if is_valid_hash(block):
             block.previous_hash = self.last_block()
             block.index = len(chain) - 1
@@ -102,3 +102,8 @@ class Blockchain:
             print("Block not added. Check its integrity before trying again")
 
         return None
+
+#    def operate(self, transac, sender, recepient):
+#        transac.coverage = transac.validate_coverage(sender, transac.product, transac.quantity)
+#        if transac.coverage == True:
+#
