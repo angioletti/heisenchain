@@ -10,9 +10,5 @@ class Block:
         self.hash = ''
 
     def add_transac(transac):
-        if len(transac) < 11:
-            self.transactions.append(transac)
-            return True
-        else:
-            return False
+        self.transactions.append(transac)
 
