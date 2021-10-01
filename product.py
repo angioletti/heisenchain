@@ -17,5 +17,5 @@ class Product:
     def __repr__(self):
         product = 'Product_ID  : ' + self.id[:6]
         name = 'Name        : ' + self.name
-        manuf = 'Manufacturer: ' + self.manufacturer
+        manuf = 'Manufacturer: ' + self.manufacturer + '\n'
         return '\n'.join([product,name,manuf])
