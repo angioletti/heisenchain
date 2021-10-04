@@ -16,12 +16,13 @@ class Blockchain:
     the blockchain will be reset
     '''
     difficulty = 2
+    transactions_per_block = 3
 
     def __init__(self):
-        self.pool_unconfirmed_blocks = []
-        self.pool_rejected_blocks = []
+        self.pool_unconfirmed_block = []
+        self.pool_rejected_block = []
         self.pool_transaction = []
-        self.pool_rejected_transac = []
+        self.pool_rejected_transaction = []
         self.chain = []
         self.create_genesis_block()
 
@@ -38,8 +39,9 @@ class Blockchain:
         genesis_block = bl.Block()
         genesis_block.nonce = 0
         genesis_block.hash = '0'*64
+        print(genesis_block.hash)
         self.chain.append(genesis_block)
-
+        print(type(self.chain[0]))
 
     def is_valid_hash(self, block):
         '''
@@ -51,7 +53,7 @@ class Blockchain:
         bhash = block.hash
 
         # Was not tampered with
-        if bhash == self.compute_hash(block):
+        if bhash.startswith('0'*self.difficulty):
             not_tampered = True
         else:
             not_tampered = False
@@ -70,14 +72,14 @@ class Blockchain:
         The block was validated by a miner, who asks to append the block to the blockchain.
         '''
 
-        if is_valid_hash(block):
-            block.previous_hash = self.last_block()
-            block.index = len(chain) - 1
-            chain.append(block)
+        if self.is_valid_hash(block):
+            block.previous_hash = self.last_block.hash
+            block.index = len(self.chain) - 1
+            self.chain.append(block)
 
         else:
             print("Block not added. Check its integrity before trying again")
-            self.pool_rejected_blocks.append(block)
+            self.pool_rejected_block.append(block)
 
         return None
 
@@ -87,5 +89,8 @@ class Blockchain:
         '''
         transac = trn.Transaction(trtype, product, quantity, sender, recepient, details)
         self.pool_transaction.append(transac)
-#
-# 
+#        print(self.pool_transaction)
+
+    def query_blocks(self):
+        for idx, i in enumerate(self.chain):
+            print("""\n Block: {seq}\n Prev. Hash: {phash}\n Hash: {hash}\n Transactions: {trn}\n""".format(seq=idx, hash=i.hash, trn=i.transaction_list, phash=i.previous_hash))
