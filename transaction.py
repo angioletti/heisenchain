@@ -3,12 +3,12 @@ import hashlib as hl
 
 class Transaction:
 
-    allowed_transactions = ['create', 'transfer', 'remove']
+    allowed_transaction_list = ['create', 'transfer', 'remove']
 
     def __init__(self, trtype, product, quantity,
                  sender, recepient, details):
 
-        if trtype not in self.allowed_transactions:
+        if trtype not in self.allowed_transaction_list:
             print('Unable to create transaction type: ' + trtype)
             return None
         else:
@@ -17,6 +17,7 @@ class Transaction:
             self.details = details
             self.sender = sender
             self.recepient = recepient
+            self.trtype = trtype
             self.create_timestamp = time.time()
             self.transac_id = self.transac_id()
 
@@ -27,7 +28,7 @@ class Transaction:
         return('TR-' + self.transac_id[:4])
 
     def transac_id(self):
-        id_seed = [self.product.id, self.quantity, self.details,
+        id_seed = [self.product.id, self.quantity, self.details, self.trtype,
                    self.recepient, self.sender, self.create_timestamp]
         transac_id = hl.sha1(repr(id_seed).encode()).hexdigest()
         return transac_id
